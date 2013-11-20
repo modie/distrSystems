@@ -1,16 +1,15 @@
 #README
-============
 Distributed Systems on Android for school project .
 
 #### contributors
-modie
-kostavro
-karlis
+1. karlis
+2. kostavro
+3. modie
 
 ####blogspot for project
 [click here :)](http://distrsystemsproject2013.blogspot.gr/)
 
-####TODO
+TODO
 ============
 * Connect everybody on github
 * Get an idea of mapReduce
