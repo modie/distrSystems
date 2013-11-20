@@ -1,9 +1,18 @@
 package com.example.distrsystems;
-// what up?
-// it should work
-// dafuq
-//fixed 
-// trying git for windows
+/*
+ * 1
+ * 2
+ * 3
+ * 4
+ * 5
+ * 6
+ * 7
+ * 8
+ * 9
+ * 10
+ * 11
+ * 12
+ */
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
