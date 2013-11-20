@@ -1,12 +1,10 @@
 package com.example.distrsystems;
 // what up?
-<<<<<<< HEAD
+
 // it should work
 // dafuq
-=======
 //fixed 
 // trying git for windows
->>>>>>> 021ffc8146292c2a82408658180e4626df9c95be
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
