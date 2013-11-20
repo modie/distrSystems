@@ -3,6 +3,7 @@ package com.example.distrsystems;
 // just the same
 // it should work
 // dafuq
+// another try
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
