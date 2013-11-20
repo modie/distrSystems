@@ -1,9 +1,6 @@
 package com.example.distrsystems;
 // what up?
-// just the same
-// it should work
-// dafuq
-// another try
+//fixed 
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
