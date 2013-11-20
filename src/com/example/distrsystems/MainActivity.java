@@ -1,6 +1,7 @@
 package com.example.distrsystems;
 // what up?
 //fixed 
+// trying git for windows
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.Menu;
