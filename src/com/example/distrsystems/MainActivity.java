@@ -1,19 +1,25 @@
 package com.example.distrsystems;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.app.Activity;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 public class MainActivity extends Activity
 {
 
 	TextView TvIp ;
-	String ip ;
-	
+	String ip;
+	String DestinationIP;
+	EditText destIPText;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -30,6 +36,22 @@ public class MainActivity extends Activity
 		}
 		TvIp = (TextView) findViewById(R.id.tvip);
 		TvIp.setText(ip);
+		destIPText = (EditText)findViewById(R.id.ipaddr);
+		
+		Button button = (Button)findViewById(R.id.button1);
+		button.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				Intent comm= new Intent(v.getContext(),communication_activity.class);
+				DestinationIP = destIPText.getText().toString();
+				communication_activity.ipaddr= DestinationIP;
+				startActivity(comm);
+				
+				
+			}
+		});
+		
 		
 		
 	}
