@@ -1,18 +1,19 @@
 package com.example.distrsystems;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,26 +21,27 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 public class communication_activity extends Activity {
-	
-	Thread server ;
-	Thread client ;
+	static Socket clientSocket ;
+	static Thread server ;
+	static Thread client ;
 	Button sendButton;
 	EditText et;
 	static TextView chat;
 	static String ipaddr;
+	ObjectOutputStream out = null ;
+	ObjectInputStream in = null ;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		 
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chatlayout);
-		
+		chat = (TextView)findViewById(R.id.chatView);
+		chat.setText("");
 		server = new Thread(new Server());
 		server.start();
 		client = new Thread(new Client(ipaddr));
 		client.start();
-		chat = (TextView)findViewById(R.id.chatView);
-		
 		sendButton = (Button) findViewById(R.id.SendButton);
 		sendButton.setOnClickListener(new OnClickListener() {
 			
@@ -48,28 +50,37 @@ public class communication_activity extends Activity {
 				et = (EditText) findViewById(R.id.editText1);
 				String str = et.getText().toString();
 				try {
-					PrintWriter out = new PrintWriter(new BufferedWriter(
-							new OutputStreamWriter(Client.clientSocket.getOutputStream())),
-							true);
-					out.println(str);
-					chat.setText(chat.getText()+"\n"+"ME:"+str);
+					//TODO check if client is started .
+					out = new ObjectOutputStream(clientSocket.getOutputStream());
 					
-				} catch (IOException e) {
+					out.writeUTF(str);
+					out.flush();
+					
+					Log.e("it did write",""+str);
+					updateText("ME:"+str);
+					
+					
+				} catch (Exception e) {
 					
 					e.printStackTrace();
-				}
+				} 
 				
 			}
 		});
 		
 	}
+	public static synchronized void updateText(String input)
+	{
+		chat.setText(chat.getText()+"\n"+input);
+	}
 	
 	public static class Server implements Runnable{
-		
 		static ServerSocket serverSocket;
-		final int port = 5000;
+		final int port = 4321;
 		Socket clientSocket;
-		BufferedReader reader;
+		
+		
+		ObjectInputStream in ;
 		String input;
 		
 		
@@ -78,6 +89,7 @@ public class communication_activity extends Activity {
 			
 			try {
 				serverSocket = new ServerSocket(port);
+				Log.e("part","1");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -86,12 +98,19 @@ public class communication_activity extends Activity {
 			while(true){
 				
 				try {
-					clientSocket = serverSocket.accept();
-					reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-					input = reader.readLine();
-					communication_activity.chat.setText(communication_activity.chat.getText()+"\n"+"OTHER:"+input);
+					Log.e("part","2");
+					this.clientSocket = serverSocket.accept();
+					Log.e("part","3");
+					in = new ObjectInputStream(clientSocket.getInputStream()); 
+					Log.e("input is",""+input);
+					
+					
+					input = in.readUTF();
+					communication_activity.updateText("OTHER: "+input);
+					Log.e("wtf","it reached here ,right ?");
 					clientSocket.close();
-					} catch (IOException e) {
+					Log.e("e","closed socket");
+					} catch (Exception e) {
 					e.printStackTrace();
 				}
 				
@@ -101,11 +120,13 @@ public class communication_activity extends Activity {
 		
 		
 	}
+	
+	
 	public static class Client implements Runnable{
 		
-		static  Socket clientSocket;
-		final int serverport=5000;
-		static String SERVER_IP ="10.0.2.15";
+		boolean delivered = false ;
+		final int serverport=4321;
+		static String SERVER_IP ="192.168.1.64";
 		OutputStream write;
 		String input;
 		
@@ -115,18 +136,16 @@ public class communication_activity extends Activity {
 		@Override
 		public void run() {
 			try {
+				
 				InetAddress serverAddr = InetAddress.getByName(SERVER_IP);
 				clientSocket = new Socket(serverAddr, serverport);
+				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
-		public Socket getClientSocket(){
-			
-			return clientSocket;
-		}
+		
 	}
 	
 }
