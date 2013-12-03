@@ -38,11 +38,11 @@ public class communication_activity extends Activity {
 		setContentView(R.layout.chatlayout);
 		chat = (TextView)findViewById(R.id.chatView);
 		chat.setText("");
-		server = new Thread(new Server());
-		server.start();
-		client = new Thread(new Client(ipaddr));
-		client.start();
+		//server = new Thread(new Server());
+		//server.start();
+		
 		sendButton = (Button) findViewById(R.id.SendButton);
+		
 		sendButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -50,7 +50,9 @@ public class communication_activity extends Activity {
 				et = (EditText) findViewById(R.id.editText1);
 				String str = et.getText().toString();
 				try {
-					//TODO check if client is started .
+					client = new Thread(new Client(ipaddr));
+					client.start();
+					
 					out = new ObjectOutputStream(clientSocket.getOutputStream());
 					
 					out.writeUTF(str);
@@ -60,10 +62,12 @@ public class communication_activity extends Activity {
 					updateText("ME:"+str);
 					
 					
+					
 				} catch (Exception e) {
 					
 					e.printStackTrace();
-				} 
+				}
+				
 				
 			}
 		});
