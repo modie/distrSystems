@@ -26,6 +26,7 @@ public class communication_activity extends Activity {
 	static Thread client ;
 	Button sendButton;
 	EditText et;
+	boolean msgSent,msgReceived =false  ;
 	static TextView chat;
 	static String ipaddr;
 	ObjectOutputStream out = null ;
@@ -38,9 +39,18 @@ public class communication_activity extends Activity {
 		setContentView(R.layout.chatlayout);
 		chat = (TextView)findViewById(R.id.chatView);
 		chat.setText("");
-		//server = new Thread(new Server());
-		//server.start();
-		
+		server = new Thread(new Server());
+		server.start();
+		client = new Thread(new Client(ipaddr));
+		client.start();
+		try
+		{
+			out = new ObjectOutputStream(clientSocket.getOutputStream());
+		} catch (IOException e1)
+		{
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		sendButton = (Button) findViewById(R.id.SendButton);
 		
 		sendButton.setOnClickListener(new OnClickListener() {
@@ -50,14 +60,29 @@ public class communication_activity extends Activity {
 				et = (EditText) findViewById(R.id.editText1);
 				String str = et.getText().toString();
 				try {
+					while(!msgSent)
+					{
 					client = new Thread(new Client(ipaddr));
+					Log.e("client","point1");
 					client.start();
+					//msgSent == false 
 					
+					Log.e("client","point2");
 					out = new ObjectOutputStream(clientSocket.getOutputStream());
+					in = new ObjectInputStream(clientSocket.getInputStream());
+					Log.e("client","point3");
+					
 					
 					out.writeUTF(str);
+					Log.e("client","point3");
 					out.flush();
-					
+					Log.e("client","point4");
+					if(in.readUTF().equals("ty faggit"))
+					{
+						msgSent = true ;
+					}
+					}
+					msgSent = false ;
 					Log.e("it did write",""+str);
 					updateText("ME:"+str);
 					
@@ -106,10 +131,11 @@ public class communication_activity extends Activity {
 					this.clientSocket = serverSocket.accept();
 					Log.e("part","3");
 					in = new ObjectInputStream(clientSocket.getInputStream()); 
-					Log.e("input is",""+input);
+					
 					
 					
 					input = in.readUTF();
+					Log.e("input is",""+input);
 					communication_activity.updateText("OTHER: "+input);
 					Log.e("wtf","it reached here ,right ?");
 					clientSocket.close();
