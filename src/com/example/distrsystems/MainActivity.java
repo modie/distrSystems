@@ -46,8 +46,7 @@ public class MainActivity extends Activity
 				Intent comm= new Intent(v.getContext(),communication_activity.class);
 				DestinationIP = destIPText.getText().toString();
 				communication_activity.ipaddr= DestinationIP;
-				//TODO remove that one
-				communication_activity.ipaddr = "192.168.1.64";
+				
 				startActivity(comm);
 				
 				

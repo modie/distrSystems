@@ -1,9 +1,6 @@
 package com.example.distrsystems;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
@@ -13,7 +10,6 @@ import java.net.Socket;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,7 +22,6 @@ public class communication_activity extends Activity {
 	static Thread client ;
 	Button sendButton;
 	EditText et;
-	boolean msgSent,msgReceived =false  ;
 	static TextView chat;
 	static String ipaddr;
 	ObjectOutputStream out = null ;
@@ -41,16 +36,7 @@ public class communication_activity extends Activity {
 		chat.setText("");
 		server = new Thread(new Server());
 		server.start();
-		client = new Thread(new Client(ipaddr));
-		client.start();
-		try
-		{
-			out = new ObjectOutputStream(clientSocket.getOutputStream());
-		} catch (IOException e1)
-		{
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 		sendButton = (Button) findViewById(R.id.SendButton);
 		
 		sendButton.setOnClickListener(new OnClickListener() {
@@ -60,30 +46,16 @@ public class communication_activity extends Activity {
 				et = (EditText) findViewById(R.id.editText1);
 				String str = et.getText().toString();
 				try {
-					while(!msgSent)
-					{
-					client = new Thread(new Client(ipaddr));
-					Log.e("client","point1");
-					client.start();
-					//msgSent == false 
 					
-					Log.e("client","point2");
+					client = new Thread(new Client(ipaddr));
+					client.start();
+					
+					Thread.sleep(200);
 					out = new ObjectOutputStream(clientSocket.getOutputStream());
-					in = new ObjectInputStream(clientSocket.getInputStream());
-					Log.e("client","point3");
 					
 					
 					out.writeUTF(str);
-					Log.e("client","point3");
 					out.flush();
-					Log.e("client","point4");
-					if(in.readUTF().equals("ty faggit"))
-					{
-						msgSent = true ;
-					}
-					}
-					msgSent = false ;
-					Log.e("it did write",""+str);
 					updateText("ME:"+str);
 					
 					
@@ -118,7 +90,6 @@ public class communication_activity extends Activity {
 			
 			try {
 				serverSocket = new ServerSocket(port);
-				Log.e("part","1");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -127,19 +98,12 @@ public class communication_activity extends Activity {
 			while(true){
 				
 				try {
-					Log.e("part","2");
 					this.clientSocket = serverSocket.accept();
-					Log.e("part","3");
 					in = new ObjectInputStream(clientSocket.getInputStream()); 
 					
-					
-					
 					input = in.readUTF();
-					Log.e("input is",""+input);
 					communication_activity.updateText("OTHER: "+input);
-					Log.e("wtf","it reached here ,right ?");
 					clientSocket.close();
-					Log.e("e","closed socket");
 					} catch (Exception e) {
 					e.printStackTrace();
 				}
