@@ -30,7 +30,7 @@ public  class Server implements Runnable{
 				this.clientSocket = serverSocket.accept();
 				in = new ObjectInputStream(clientSocket.getInputStream()); 
 				input = in.readUTF();
-				communication_activity.updateText("OTHER: "+input);
+				communication_activity.updateConversationHandler.post(new updateUIThread("Other:",input));
 				clientSocket.close();
 				} catch (Exception e) {
 				e.printStackTrace();
@@ -39,6 +39,8 @@ public  class Server implements Runnable{
 		 
 		}			
 	}
+	
+	
 	
 	
 	

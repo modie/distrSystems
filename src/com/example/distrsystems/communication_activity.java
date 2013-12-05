@@ -6,6 +6,7 @@ import java.net.Socket;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,9 @@ public class communication_activity extends Activity {
 	static Thread client ;
 	static String ipaddr;
 	static int port;
+	static Handler updateConversationHandler;
+
+	
 	//Graphical Units
 	Button sendButton;
 	EditText et;
@@ -31,6 +35,7 @@ public class communication_activity extends Activity {
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.chatlayout);
+		updateConversationHandler = new Handler();
 		chat = (TextView)findViewById(R.id.chatView);
 		chat.setText("");
 		chat.setMovementMethod(new ScrollingMovementMethod());
@@ -49,7 +54,7 @@ public class communication_activity extends Activity {
 					out = new ObjectOutputStream(clientSocket.getOutputStream());
 					out.writeUTF(str);
 					out.flush();
-					updateText("ME:"+str);
+					updateConversationHandler.post(new updateUIThread("Me:",str));
 					
 					
 					

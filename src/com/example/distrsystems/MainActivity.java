@@ -50,11 +50,12 @@ public class MainActivity extends Activity
 				String destinationIP;
 				int port;
 				Intent comm= new Intent(v.getContext(),communication_activity.class);
+				/////set addr and port that we are going to connect
 				destinationIP = destIPText.getText().toString();
 				port = Integer.parseInt(portText.getText().toString());
-				
 				communication_activity.ipaddr= destinationIP;
 				communication_activity.port=port;
+				//start communication activity
 				startActivity(comm);
 				
 				
