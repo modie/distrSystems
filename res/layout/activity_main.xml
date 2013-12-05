@@ -26,18 +26,37 @@
         android:id="@+id/connectTo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-         android:textSize="25sp"
+        android:textSize="25sp"
         android:text="Connet to:" />
 
-    <EditText
-        android:id="@+id/ipaddr"
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10" />
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/editIPAddr"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.7"
+            android:ems="10" >
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/editPort"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.3"
+            android:ems="10" />
+
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/button1"
-        android:layout_width="fill_parent"
+        android:id="@+id/connectButton"
+        android:layout_width="351dp"
         android:layout_height="wrap_content"
         android:text="Connect"
         android:textSize="25sp" />

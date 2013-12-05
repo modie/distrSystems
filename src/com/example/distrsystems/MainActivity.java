@@ -16,10 +16,11 @@ import android.widget.TextView;
 public class MainActivity extends Activity
 {
 
-	TextView TvIp ;
+	TextView phoneIp ;
 	String ip;
-	String DestinationIP;
+	EditText portText;
 	EditText destIPText;
+	static Thread server ;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -34,19 +35,26 @@ public class MainActivity extends Activity
 		{
 			Log.e("error","could not find ip adress");
 		}
-		TvIp = (TextView) findViewById(R.id.tvip);
-		TvIp.setText(ip);
-		destIPText = (EditText)findViewById(R.id.ipaddr);
-		
-		Button button = (Button)findViewById(R.id.button1);
+		phoneIp = (TextView) findViewById(R.id.tvip);
+		phoneIp.setText(ip);
+		destIPText = (EditText)findViewById(R.id.editIPAddr);
+		portText = (EditText) findViewById(R.id.editPort);
+		server = new Thread(new Server());
+		server.start();
+		Button button = (Button)findViewById(R.id.connectButton);
 		button.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
-				Intent comm= new Intent(v.getContext(),communication_activity.class);
-				DestinationIP = destIPText.getText().toString();
-				communication_activity.ipaddr= DestinationIP;
 				
+				String destinationIP;
+				int port;
+				Intent comm= new Intent(v.getContext(),communication_activity.class);
+				destinationIP = destIPText.getText().toString();
+				port = Integer.parseInt(portText.getText().toString());
+				
+				communication_activity.ipaddr= destinationIP;
+				communication_activity.port=port;
 				startActivity(comm);
 				
 				
