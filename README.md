@@ -5,7 +5,7 @@ Distributed Systems on Android for University project .
 1. nkparadox
 2. kostavro
 3. modie
-
+4. bstrds
 <h3>Blogspot for project:</h3>
 http://distrsystemsproject2013.blogspot.gr/
 
