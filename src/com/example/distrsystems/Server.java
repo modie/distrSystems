@@ -8,7 +8,7 @@ import java.net.Socket;
 public  class Server implements Runnable{
 	
 	static ServerSocket serverSocket;
-	final int port = 4321;
+	final int port = 4322;
 	Socket clientSocket;
 	ObjectInputStream in ;
 	String input;
@@ -30,7 +30,7 @@ public  class Server implements Runnable{
 				this.clientSocket = serverSocket.accept();
 				in = new ObjectInputStream(clientSocket.getInputStream()); 
 				input = in.readUTF();
-				communication_activity.updateConversationHandler.post(new updateUIThread("Other:",input));
+				communication_activity.updateConversationHandler.post(new updateUI("Other:",input));
 				clientSocket.close();
 				} catch (Exception e) {
 				e.printStackTrace();

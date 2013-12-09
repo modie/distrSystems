@@ -1,6 +1,8 @@
 package com.example.distrsystems;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -44,6 +46,7 @@ public class MainActivity extends Activity
 		Button button = (Button)findViewById(R.id.connectButton);
 		button.setOnClickListener(new OnClickListener() {
 			
+			@SuppressWarnings("deprecation")
 			@Override
 			public void onClick(View v) {
 				
@@ -51,12 +54,25 @@ public class MainActivity extends Activity
 				int port;
 				Intent comm= new Intent(v.getContext(),communication_activity.class);
 				/////set addr and port that we are going to connect
+				try{
 				destinationIP = destIPText.getText().toString();
 				port = Integer.parseInt(portText.getText().toString());
 				communication_activity.ipaddr= destinationIP;
 				communication_activity.port=port;
 				//start communication activity
 				startActivity(comm);
+				}catch(Exception e){
+					AlertDialog alertDialog = new AlertDialog.Builder(v.getContext()).create();
+					alertDialog.setTitle("Error");
+					alertDialog.setMessage("IP and port must be filled with proper info");
+					alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
+					   public void onClick(DialogInterface dialog, int which) {
+					      // TODO Add your code for the button here.
+					   }
+					});
+					// Set the Icon for the Dialog
+					alertDialog.show();
+				}
 				
 				
 			}

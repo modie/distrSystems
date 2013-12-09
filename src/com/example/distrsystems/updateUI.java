@@ -1,13 +1,13 @@
 package com.example.distrsystems;
 
 
-class updateUIThread implements Runnable {
+class updateUI implements Runnable {
 	
     private String msg;
     private String user;
 
 
- public updateUIThread(String user,String str) {
+ public updateUI(String user,String str) {
 
      this.msg = str;
      this.user = user;

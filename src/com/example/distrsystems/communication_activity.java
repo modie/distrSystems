@@ -54,7 +54,7 @@ public class communication_activity extends Activity {
 					out = new ObjectOutputStream(clientSocket.getOutputStream());
 					out.writeUTF(str);
 					out.flush();
-					updateConversationHandler.post(new updateUIThread("Me:",str));
+					updateConversationHandler.post(new updateUI("Me:",str));
 					
 					
 					
